@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStream - Reproductor</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-black">
+
+    <div class="container-fluid h-100 p-0">
+        <div class="row g-0 min-vh-100">
+
+            <!-- Sidebar / Playlist -->
+            <div
+                class="col-lg-3 col-md-4 bg-dark text-white d-flex flex-column sidebar-container border-end border-secondary order-2 order-lg-1">
+                <div class="p-3 border-bottom border-secondary d-flex align-items-center justify-content-between">
+                    <a href="index.html" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Volver
+                    </a>
+                    <span class="fw-bold text-danger">CineStream</span>
+                </div>
+
+                <div class="p-3 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-between">
+                    <h6 class="text-uppercase text-secondary mb-0" style="font-size: 0.8rem; letter-spacing: 1px;">
+                        Capítulos / Películas</h6>
+                    <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" id="toggleChapterList">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="movie-list-container flex-grow-1 overflow-auto p-2" id="chapterListContainer">
+                    <div id="movie-list" class="list-group list-group-flush">
+                        <!-- Playlist items injected by app.js -->
+                    </div>
+                </div>
+
+                <!-- Media Banner Slider -->
+                <div class="media-banner-container bg-dark border-top border-secondary p-3">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="text-uppercase text-secondary mb-0" style="font-size: 0.7rem; letter-spacing: 1px;">
+                            <i class="fas fa-star me-2"></i>Destacado
+                        </h6>
+                    </div>
+                    <div class="media-slider-wrapper position-relative">
+                        <div class="media-slider">
+                            <!-- Media Slide 1 -->
+                            <div class="media-slide active">
+                                <a href="https://riaac.com" target="_blank" class="text-decoration-none">
+                                    <img src="./portadas/promo1.jpg" alt="Destacado 1" class="banner-image">
+                                </a>
+                            </div>
+                            <!-- Media Slide 2 -->
+                            <div class="media-slide">
+                                <a href="https://manyalo.net.pe" target="_blank" class="text-decoration-none">
+                                    <img src="./portadas/promo2.jpg" alt="Destacado 2" class="banner-image">
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Slider Dots -->
+                        <div class="slider-dots text-center mt-2">
+                            <span class="slider-dot active" data-slide="0"></span>
+                            <span class="slider-dot" data-slide="1"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Player Area -->
+            <div class="col-lg-9 col-md-8 bg-black text-white d-flex flex-column order-1 order-lg-2">
+                <!-- Video Container -->
+                <div class="video-wrapper flex-grow-1 d-flex align-items-center justify-content-center bg-black position-relative"
+                    id="video-container">
+                    <video id="main-video" class="w-100 h-100" style="max-height: 80vh; object-fit: contain;"
+                        oncontextmenu="return false;">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+
+                    <!-- Custom Controls Overlay -->
+                    <div class="custom-controls position-absolute bottom-0 w-100 p-3" id="custom-controls">
+                        <!-- Progress Bar -->
+                        <div class="progress-container mb-2">
+                            <input type="range" id="seek-bar" class="custom-range" value="0" min="0" step="0.1">
+                        </div>
+
+                        <!-- Buttons Row -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <button id="play-pause-btn" class="btn btn-link text-white p-0">
+                                    <i class="fas fa-play fa-lg"></i>
+                                </button>
+
+                                <div class="volume-container d-flex align-items-center gap-2">
+                                    <button id="mute-btn" class="btn btn-link text-white p-0">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                    <input type="range" id="volume-bar" class="custom-range" style="width: 80px;"
+                                        value="1" min="0" max="1" step="0.1">
+                                </div>
+
+                                <span class="text-white small font-monospace">
+                                    <span id="current-time">00:00</span> / <span id="duration">00:00</span>
+                                </span>
+                            </div>
+
+                            <div>
+                                <button id="fullscreen-btn" class="btn btn-link text-white p-0">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Details -->
+                <div class="movie-details p-4 bg-dark border-top border-secondary">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="w-100">
+                            <h2 id="movie-title" class="fw-bold mb-2">Cargando...</h2>
+                            <div class="mb-3 text-secondary">
+                                <span id="movie-year" class="badge bg-secondary me-2"></span>
+                                <span id="movie-duration" class="badge bg-dark border border-secondary"></span>
+                            </div>
+                            <p id="movie-desc" class="text-light lead fs-6" style="max-width: 800px;">
+                                ...
+                            </p>
+
+                            <!-- Chapter Navigation Buttons -->
+                            <div id="chapter-navigation" class="mt-4 d-none">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button id="prev-chapter-btn"
+                                        class="btn btn-outline-danger d-flex align-items-center gap-2">
+                                        <i class="fas fa-chevron-left"></i>
+                                        <span class="d-none d-sm-inline">Anterior</span>
+                                    </button>
+                                    <button id="next-chapter-btn"
+                                        class="btn btn-danger d-flex align-items-center gap-2">
+                                        <span class="d-none d-sm-inline">Siguiente</span>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- App Data -->
+    <script src="data.js"></script>
+    <!-- App Logic -->
+    <script src="app.js"></script>
+
+<!-- Botón flotante para donaciones (QR Yape/Ica) -->
+
+<div style="position: fixed; bottom: 100px; right: 30px; z-index: 1050; display: flex; flex-direction: column; gap: 14px; align-items: flex-end;">
+    <!-- Botón QR -->
+    <button class="btn btn-success rounded-circle shadow-lg" style="width:60px; height:60px; font-size: 2rem;" onclick="toggleDonateModal()">
+        <!-- <i class="fas fa-qrcode"></i> -->
+    </button>
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@tu_usuario" target="_blank" class="btn btn-dark rounded-circle shadow" style="width:60px; height:60px; display:flex; align-items:center; justify-content:center; font-size:2rem;border:2px solid white;">
+        <i class="fab fa-tiktok"></i>
+    </a>
+</div>
+
+<!-- Modal QR Donación -->
+<div id="donate-modal" style="display:none; position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:1100; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:32px 24px; max-width:90vw; max-height:90vh; text-align:center; position:relative;">
+        <button onclick="toggleDonateModal()" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5rem; color:#333;">
+            <i class="fas fa-times"></i>
+        </button>
+        <h5 class="mb-3 text-dark">¡Apóyanos con tu donación!</h5>
+        <div class="d-flex flex-column flex-md-row gap-4 justify-content-center align-items-center">
+            <div>
+                <p class="mb-1 text-dark">Yape</p>
+                <img src="./portadas/qr_yape.png" alt="QR Yape" style="width:180px; max-width:40vw; border-radius:12px; border:2px solid #28a745;">
+            </div>
+            <div>
+                <p class="mb-1 text-dark">Ica</p>
+                <img src="./portadas/qr_ica.png" alt="QR Ica" style="width:180px; max-width:40vw; border-radius:12px; border:2px solid #007bff;">
+            </div>
+        </div>
+        <p class="mt-3 text-secondary" style="font-size:0.95rem;">¡Gracias por tu apoyo!</p>
+    </div>
+</div>
+
+<!-- Barra lateral flotante de redes sociales -->
+
+
+<script>
+// Mostrar/Ocultar modal de donación
+function toggleDonateModal() {
+    const modal = document.getElementById('donate-modal');
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+    }
+}
+</script>
+</body>
+
+</html>
