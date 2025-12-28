@@ -27,6 +27,21 @@ const movies = [
                 title: "Capítulo 4",
                 duration: "1h aprox",
                 videoUrl: "./videos/stranger/Temporada5_Capitulo4_Stranger_Things.mp4"
+            },
+            {
+                title: "Capítulo 5",
+                duration: "1h aprox",
+                videoUrl: "./videos/stranger/Temporada5_Capitulo5_Stranger_Things.mp4"
+            },
+            {
+                title: "Capítulo 6",
+                duration: "1h aprox",
+                videoUrl: "./videos/stranger/Temporada5_Capitulo6_Stranger_Things.mp4"
+            },
+            {
+                title: "Capítulo 7",
+                duration: "1h aprox",
+                videoUrl: "./videos/stranger/Temporada5_Capitulo7_Stranger_Things.mp4"
             }
 
         ]
